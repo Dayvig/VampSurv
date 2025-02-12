@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10596e20ae3bde841a91cbee861df9ba, type: 3}
+  m_Name: Egg Bullets
+  m_EditorClassIdentifier: 
+  priority: 0
+  factors: []
+  payloads:
+  - {fileID: 280825876747279606, guid: cfe0e4802d94f4e4f8b372f832ed4e1a, type: 3}
+  - {fileID: 280825876747279606, guid: cfe0e4802d94f4e4f8b372f832ed4e1a, type: 3}
+  type: 0
+  owner: {fileID: 0}
+  key: 1
