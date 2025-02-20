@@ -7,7 +7,7 @@ public class HitboxScript : MonoBehaviour
 {
     public Collider2D thisCollider;
     public List<BaseEnemy> immuneEnemies = new List<BaseEnemy>();
-
+    public bool spawning = false;
     public virtual void Reset()
     {
         immuneEnemies.Clear();

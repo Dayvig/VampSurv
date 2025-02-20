@@ -179,15 +179,26 @@ public class BaseEnemy : MonoBehaviour
         {
             Die();
         }
+        bool found = false;
+        for (int i = 0; i < VfxManager.instance.inactiveDamageNumbers.Count; i++) 
+        {
+            if (VfxManager.instance.inactiveDamageNumbers[i].active == false)
+            {
+                VfxManager.instance.inactiveDamageNumbers[0].Spawn(transform.position, 1f, Color.white, (int)damage);
+                VfxManager.instance.toSpawnDamageNumbers.Add(VfxManager.instance.inactiveDamageNumbers[0]);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            VfxManager.instance.InstantiateNewDamageNumber(transform.position, 1f, Color.white, (int)damage);
+        }
     }
 
     public void touchHitbox(HitboxScript h)
     {
-        life -= 100;
-        if (life <= 0)
-        {
-            Die();
-        }
+        TakeDamage(100);
     }
 
     public void Die()

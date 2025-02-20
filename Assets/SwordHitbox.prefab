@@ -145,3 +145,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thisCollider: {fileID: 3556586855656530202}
   immuneEnemies: []
+  spawning: 0

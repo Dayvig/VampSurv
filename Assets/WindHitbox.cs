@@ -9,7 +9,6 @@ public class WindHitbox : TimedHitbox
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log(other.name);
             bool found = false;
             foreach (Modifier m in EnemyManager.instance.player.modifiers)
             {

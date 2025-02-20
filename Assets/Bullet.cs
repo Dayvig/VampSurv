@@ -107,6 +107,7 @@ public class Bullet : MonoBehaviour
             {
                 a.Apply();
             }
+            a.Update();
         }
 
         if (payloadsToSpawn == 0)

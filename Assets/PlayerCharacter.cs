@@ -51,6 +51,7 @@ public class PlayerCharacter : MonoBehaviour
     public float currentHeat = -1f;
     public bool coolingDown = false;
     public Dictionary<string, float> bonusFiringSpeedMults = new Dictionary<string, float>();
+    public List<Modifier> toDispose = new List<Modifier>();
     #endregion
 
     public List<Modifier> modifiers = new List<Modifier>();
@@ -125,7 +126,14 @@ public class PlayerCharacter : MonoBehaviour
         swordUpdate();
         rotationTarget = LookAtMouse(transform.position);
         armTransformations(rotationTarget);
-
+        foreach (Modifier m in toDispose)
+        {
+            if (modifiers.Contains(m))
+            {
+                modifiers.Remove(m);
+            }
+        }
+        toDispose.Clear();
     }
 
     void armTransformations(float rotationDeg)
@@ -444,6 +452,8 @@ public class PlayerCharacter : MonoBehaviour
                         break;
                     case BulletAttachmentModifier.Key.AERO:
                         Aero newAero = new Aero(b);
+                        newAero.Setup();
+                        newAero.originalModifier = (AeroBullets)thisModifier;
                         newAero.hitboxObject = thisModifier.objects[0];
                         newAero.dur = thisModifier.factors[0];
                         b.attachments.Add(newAero);

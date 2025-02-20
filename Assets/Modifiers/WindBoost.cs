@@ -6,6 +6,7 @@ using UnityEngine;
 public class WindBoost : Modifier
 {
     public float windboostTimer = 0.0f;
+    public bool active = true;
     public WindBoost(PlayerCharacter newOwner) : base(newOwner)
     { 
     }
@@ -13,16 +14,21 @@ public class WindBoost : Modifier
     public override void Apply()
     {
         base.Apply();
-        owner.finalMoveSpeed *= factors[0];
-        windboostTimer += Time.deltaTime;
-        if (windboostTimer > factors[1])
+        if (active)
         {
-            owner.modifiers.Remove(this);
+            owner.finalMoveSpeed *= factors[0];
+            windboostTimer += Time.deltaTime;
+            if (windboostTimer > factors[1])
+            {
+                owner.toDispose.Add(this);
+                active = false;
+            }
         }
     }
     public override void Setup()
     {
         base.Setup();
         windboostTimer = 0.0f;
+        active = true;
     }
 }

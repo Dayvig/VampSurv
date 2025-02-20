@@ -10,6 +10,9 @@ public class HitboxManager : MonoBehaviour
     public List<HitboxScript> inactiveHitboxes = new List<HitboxScript>();
     [HideInInspector]
     public List<HitboxScript> markedForDeathHitboxes = new List<HitboxScript>();
+    [HideInInspector]
+    public List<HitboxScript> toSpawnHitboxes = new List<HitboxScript>();
+
 
     public static HitboxManager instance { get; private set; }
 
@@ -20,15 +23,23 @@ public class HitboxManager : MonoBehaviour
 
     public void Update()
     {
+        foreach (HitboxScript h in toSpawnHitboxes)
+        {
+            h.spawning = false;
+            activeHitboxes.Add(h);
+            inactiveHitboxes.Remove(h);
+        }
+        foreach (HitboxScript h in activeHitboxes)
+        {
+            h.hitboxUpdate();
+        }
+        toSpawnHitboxes.Clear();
         Trash();
     }
 
     public void FixedUpdate()
     {
-        foreach (HitboxScript h in activeHitboxes)
-        {
-            h.hitboxUpdate();
-        }
+
     }
 
     void Trash()
@@ -49,6 +60,7 @@ public class HitboxManager : MonoBehaviour
         {
             Debug.Log("Attempted to instantiate a hitbox without hitboxScript");
         }
+        toSpawnHitboxes.Add(hitboxScript);
         return newHitboxObject;
     }
 }

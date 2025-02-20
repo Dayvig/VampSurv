@@ -1,32 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.TextCore.Text;
 
 public class Aero : BulletAttachment
 {
     public GameObject hitboxObject;
     public float dur;
+    public AeroBullets originalModifier;
+
     public Aero(Bullet b) : base(b)
     {
         type = Type.ONFIRE;
     }
-
     public override void Apply()
     {
+        //Debug.Log(originalModifier.spawnWindboxTimer);
+        if (originalModifier == null || originalModifier.spawnWindboxTimer < originalModifier.spawnInterval)
+        {
+            return;
+        }
+        if (originalModifier.spawnWindboxTimer >= originalModifier.spawnInterval)
+        {
+            originalModifier.spawnWindboxTimer -= originalModifier.spawnInterval + Random.Range(-(originalModifier.spawnInterval / 10), (originalModifier.spawnInterval / 10));
+        }
+        //Debug.Log(originalModifier.spawnWindboxTimer);
         WindHitbox newWindHitbox;
         for (int i = 0; i < HitboxManager.instance.inactiveHitboxes.Count; i++)
         {
-            if (HitboxManager.instance.inactiveHitboxes[i] is WindHitbox)
+            if (HitboxManager.instance.inactiveHitboxes[i] is WindHitbox && !HitboxManager.instance.inactiveHitboxes[i].spawning)
             {
                 newWindHitbox = (WindHitbox)HitboxManager.instance.inactiveHitboxes[i];
                 newWindHitbox.duration = dur;
                 newWindHitbox.transform.parent.transform.position = owner.firingOrigin;
                 newWindHitbox.transform.parent.transform.rotation = Quaternion.Euler(0f, 0f, LookAtPoint(owner.transform.position) + 270);
                 newWindHitbox.Reset();
-
-                HitboxManager.instance.activeHitboxes.Add(newWindHitbox);
-                HitboxManager.instance.inactiveHitboxes.Remove(newWindHitbox);
+                newWindHitbox.spawning = true;
+                HitboxManager.instance.toSpawnHitboxes.Add(newWindHitbox);
                 return;
             }
         }
@@ -39,7 +50,7 @@ public class Aero : BulletAttachment
         {
             newWindHitbox.duration = dur;
             newWindHitbox.Reset();
-            HitboxManager.instance.activeHitboxes.Add(newWindHitbox);
+            newWindHitbox.spawning = true;
         }
         else
         {
@@ -53,6 +64,10 @@ public class Aero : BulletAttachment
     }
 
     public override void Setup()
+    {
+    }
+
+    public override void Update()
     {
     }
 }

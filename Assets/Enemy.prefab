@@ -107,8 +107,10 @@ MonoBehaviour:
   wayPointSpeedMults: []
   life: 1
   immuneBullets: []
+  immuneHitboxes: []
   lifeTimer: 0
   lastImmunityCheck: 0
+  currentMovementState: 0
 --- !u!58 &-3945740451455555414
 CircleCollider2D:
   m_ObjectHideFlags: 0

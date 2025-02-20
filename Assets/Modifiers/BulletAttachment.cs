@@ -18,4 +18,6 @@ public abstract class BulletAttachment
     public Type type;
     public abstract void Apply();
     public abstract void Setup();
+
+    public virtual void Update() { }
 }

@@ -22,3 +22,5 @@ MonoBehaviour:
   type: 0
   owner: {fileID: 0}
   key: 2
+  spawnWindboxTimer: 0.010552838
+  spawnInterval: 0.001
