@@ -179,21 +179,7 @@ public class BaseEnemy : MonoBehaviour
         {
             Die();
         }
-        bool found = false;
-        for (int i = 0; i < VfxManager.instance.inactiveDamageNumbers.Count; i++) 
-        {
-            if (VfxManager.instance.inactiveDamageNumbers[i].active == false)
-            {
-                VfxManager.instance.inactiveDamageNumbers[0].Spawn(transform.position, 1f, Color.white, (int)damage);
-                VfxManager.instance.toSpawnDamageNumbers.Add(VfxManager.instance.inactiveDamageNumbers[0]);
-                found = true;
-                break;
-            }
-        }
-        if (!found)
-        {
-            VfxManager.instance.InstantiateNewDamageNumber(transform.position, 1f, Color.white, (int)damage);
-        }
+        SpawnDamageNumber(damage);
     }
 
     public void touchHitbox(HitboxScript h)
@@ -205,11 +191,49 @@ public class BaseEnemy : MonoBehaviour
     {
         EnemyManager.instance.markedForDeathEnemies.Add(this);
         gameObject.SetActive(false);
+        SpawnExpOrb(10);
+    }
+
+    public void SpawnDamageNumber(float damage)
+    {
+        bool found = false;
+        for (int i = 0; i < VfxManager.instance.inactiveDamageNumbers.Count; i++)
+        {
+            if (VfxManager.instance.inactiveDamageNumbers[i].active == false)
+            {
+                VfxManager.instance.inactiveDamageNumbers[i].Spawn(transform.position, 1f, Color.white, (int)damage);
+                VfxManager.instance.toSpawnDamageNumbers.Add(VfxManager.instance.inactiveDamageNumbers[i]);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            VfxManager.instance.InstantiateNewDamageNumber(transform.position, 1f, Color.white, (int)damage);
+        }
+    }
+
+    public void SpawnExpOrb(float value)
+    {
+        bool found = false;
+        for (int i = 0; i < ProgressionManager.instance.inactiveOrbs.Count; i++)
+        {
+            if (ProgressionManager.instance.inactiveOrbs[i].spawning == false)
+            {
+                ProgressionManager.instance.inactiveOrbs[i].Spawn((Vector2)transform.position + Random.insideUnitCircle * 0.2f, value);
+                ProgressionManager.instance.toSpawnOrbs.Add(ProgressionManager.instance.inactiveOrbs[i]);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            ProgressionManager.instance.InstantiateNewOrb(ProgressionManager.instance.basicOrb, value, transform.position);
+        }
     }
 
     public BaseEnemy ResetValues()
     {
-        life = 1;
         waypoints.Clear();
         bounceTimer = 0.0f;
         immuneBullets.Clear();

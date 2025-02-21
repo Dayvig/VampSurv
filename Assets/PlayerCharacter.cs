@@ -52,6 +52,7 @@ public class PlayerCharacter : MonoBehaviour
     public bool coolingDown = false;
     public Dictionary<string, float> bonusFiringSpeedMults = new Dictionary<string, float>();
     public List<Modifier> toDispose = new List<Modifier>();
+    public float EXP = 0f;
     #endregion
 
     public List<Modifier> modifiers = new List<Modifier>();
@@ -134,6 +135,7 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
         toDispose.Clear();
+        checkAreaAround();
     }
 
     void armTransformations(float rotationDeg)
@@ -185,6 +187,23 @@ public class PlayerCharacter : MonoBehaviour
 
         Vector3 toPos = Vector3.MoveTowards(transform.position, transform.position + velocity.normalized, finalMoveSpeed * Time.deltaTime);
         transform.position = toPos;
+    }
+
+    public void checkAreaAround()
+    {
+        Collider2D[] hitOrbColliders = Physics2D.OverlapCircleAll(transform.position, 2f);
+        foreach (Collider2D collider in hitOrbColliders)
+        {
+            if (collider.gameObject.CompareTag("Orb"))
+            {
+                Debug.Log("hit");
+                ExpOrb hitOrb = collider.gameObject.GetComponent<ExpOrb>();
+                if (hitOrb.collectionStage == 0)
+                {
+                    hitOrb.Collect();
+                }
+            }
+        }
     }
 
     public void gunUpdate()
@@ -521,6 +540,13 @@ public class PlayerCharacter : MonoBehaviour
                 a.Apply();
             }
         }
+    }
+
+    public void CollectOrb(ExpOrb orb)
+    {
+        EXP += orb.expValue;
+        //level up if enugh exp
+
     }
 
 
